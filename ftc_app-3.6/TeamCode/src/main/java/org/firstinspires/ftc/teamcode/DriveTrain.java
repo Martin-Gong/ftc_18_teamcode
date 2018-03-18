@@ -12,20 +12,19 @@ public class DriveTrain {
     DcMotor rightFront   = null;
     DcMotor leftBack  = null;
     DcMotor rightBack  = null;
-    double speedx;
-    double speedy;
+    double speed;
     double offset;
     HardwareMap hwMap = null;
 
     public void init(HardwareMap Map, Config config) {
         hwMap = Map;
 // not use the front drive temporary
-       leftFront = hwMap.get(DcMotor.class, "fl_drive");
-        rightFront = hwMap.get(DcMotor.class, "fr_drive");
-        leftFront.setDirection(DcMotor.Direction.FORWARD);
-        rightFront.setDirection(DcMotor.Direction.REVERSE);
-        leftFront.setPower(0);
-        rightFront.setPower(0);
+//        leftFront = hwMap.get(DcMotor.class, "fl_drive");
+//        rightFront = hwMap.get(DcMotor.class, "fr_drive");
+//        leftFront.setDirection(DcMotor.Direction.FORWARD);
+//        rightFront.setDirection(DcMotor.Direction.REVERSE);
+//        leftFront.setPower(0);
+//        rightFront.setPower(0);
 
 
         leftBack = hwMap.get(DcMotor.class, "rl_drive");
@@ -37,25 +36,15 @@ public class DriveTrain {
 
 
     }
-    public void move(double powerx, double powery, double turn){
-        speedx = powerx;
-        speedy = powery;
-        offset = turn;
-        leftFront.setPower(Range.clip(speedy-speedx+offset,-1,1));
-        rightFront.setPower(Range.clip(speedy+speedx-offset,-1,1));
-        leftBack.setPower(Range.clip(speedy+speedx+offset,-1,1));
-        rightBack.setPower(Range.clip(speedy-speedx-offset,-1,1));
+    public void move(double power, double dif){
+        speed = power;
+        offset = dif;
+//        leftFront.setPower(speed-offset);
+//        rightFront.setPower(speed+offset);
+        leftBack.setPower(Range.clip(speed+offset,-1,1));
+        rightBack.setPower(Range.clip(speed-offset,-1,1));
     }
-
-//    public void strafe(double power, double dif){
-//        speed = power;
-//        offset = dif;
-//        leftFront.setPower(Range.clip(-speed+offset,-1,1));
-//        rightFront.setPower(Range.clip(speed-offset,-1,1));
-//        leftBack.setPower(Range.clip(speed+offset,-1,1));
-//        rightBack.setPower(Range.clip(-speed-offset,-1,1));
-//    }
     public void stop(){
-        move(0,0,0);
+        move(0,0);
     }
 }

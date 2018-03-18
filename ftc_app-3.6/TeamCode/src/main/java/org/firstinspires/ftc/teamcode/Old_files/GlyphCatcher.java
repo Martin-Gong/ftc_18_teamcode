@@ -1,23 +1,23 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Old_files;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.Config;
-import com.qualcomm.robotcore.util.Range;
 
 
-public class GlyphArm {
+public class GlyphCatcher {
     private DcMotor verticalMotor;
     private Servo leftHand;
     private Servo rightHand;
-    double MAX_POS = 1.00;
-    double MIN_POS = 0.20;
-    double CONTAINER_SPAN_LEFT = 190;
-    double CONTAINER_SPAN_RIGHT = 160;
+    double MAX_POS = 0.75;
+    double MIN_POS = 0.15;
+    double CONTAINER_SPAN_LEFT = 160;
+    double CONTAINER_SPAN_RIGHT = 190;
     double CONTAINER_ERROR_LR = 0;
     double CONTAINER_TURN_SPEED = 1;
     double LIFT_POWER = 0.30;
@@ -31,10 +31,10 @@ public void init(HardwareMap Map,Config config) {
     leftHand = hwMap.get(Servo.class, "lift_left");
     rightHand = hwMap.get(Servo.class, "lift_right");
 
-    MAX_POS = config.getDouble("container_max", 1.00);
-    MIN_POS = config.getDouble("container_min", 0.20);
-    CONTAINER_SPAN_LEFT = config.getDouble("container_span_left",190);
-    CONTAINER_SPAN_RIGHT = config.getDouble("container_span_right",160);
+    MAX_POS = config.getDouble("container_max", 0.75);
+    MIN_POS = config.getDouble("container_min", 0.15);
+    CONTAINER_SPAN_LEFT = config.getDouble("container_span_left",160);
+    CONTAINER_SPAN_RIGHT = config.getDouble("container_span_right",185);
     CONTAINER_ERROR_LR = config.getDouble("container_error_left_right",0);
     CONTAINER_TURN_SPEED = config.getDouble("container_turn_speed",1);
     LIFT_POWER = config.getDouble("lift_power", 0.30);
@@ -93,4 +93,11 @@ public void turnContainer(double speed){
 public double getRightPosFromLeft(double pos){
     return 1.0 - (pos*CONTAINER_SPAN_LEFT+CONTAINER_ERROR_LR)/CONTAINER_SPAN_RIGHT;
 }
+
+public double getLeftPosition(){
+    return leftHand.getPosition();
+}
+    public double getRightPosition(){
+        return rightHand.getPosition();
+    }
 }

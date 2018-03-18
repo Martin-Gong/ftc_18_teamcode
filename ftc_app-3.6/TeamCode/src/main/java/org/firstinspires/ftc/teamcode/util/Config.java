@@ -1,19 +1,13 @@
 package org.firstinspires.ftc.teamcode.util;
 
-import android.graphics.Path;
 import android.os.Environment;
 
 import com.qualcomm.robotcore.util.RobotLog;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.Properties;
-import java.util.TreeSet;
 
 /**
  * Config - Config file reader. Any configurable things (such as 'tweak' variables for quick adjustment)
@@ -46,23 +40,8 @@ public class Config {
         public void parse(String input);
     }
 
-    private OrderedProperties properties;
+    private Properties properties;
 
-    public OrderedProperties getProperties(){
-        return  properties;
-    }
-
-    public void storeProperties(String filename){
-        new File(storageDir).mkdirs();
-        try {
-            properties.putAll(properties);
-            properties.store(new FileOutputStream(storageDir+filename),"");
-        } catch (IOException e) {
-            RobotLog.ee("Config", "No config file found");
-        } catch (IllegalArgumentException e) {
-            RobotLog.ee("Config", "Bad properties file");
-        }
-    }
     /**
      * Construct a configuration from a config file. If the file is invalid, unreadable, or corrupted,
      * a RobotLog message will be logged and the resulting Config will have no entries. Uses the
@@ -72,7 +51,7 @@ public class Config {
     public Config(String filename) {
         new File(storageDir).mkdirs();
         try {
-            this.properties = new OrderedProperties();
+            this.properties = new Properties();
             properties.load(new FileInputStream(storageDir + filename));
         } catch (IOException e) {
             RobotLog.ee("Config", "No config file found");

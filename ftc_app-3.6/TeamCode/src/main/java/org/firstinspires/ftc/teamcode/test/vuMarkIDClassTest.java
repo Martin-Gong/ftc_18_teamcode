@@ -27,51 +27,28 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.test;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
-
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.teamcode.VuMarkID;
 import org.firstinspires.ftc.teamcode.util.ButtonHelper;
 import org.firstinspires.ftc.teamcode.util.Config;
-import org.firstinspires.ftc.teamcode.JewelArm;
-import org.firstinspires.ftc.teamcode.GlyphArm;
-import org.firstinspires.ftc.teamcode.DriveTrain;
+import org.firstinspires.ftc.teamcode.util.telemetry.TelemetryWrapper;
 
-import org.firstinspires.ftc.teamcode.util.ButtonHelper;
-import static org.firstinspires.ftc.teamcode.util.ButtonHelper.dpad_down;
-import static org.firstinspires.ftc.teamcode.util.ButtonHelper.dpad_up;
-import static org.firstinspires.ftc.teamcode.util.ButtonHelper.dpad_left;
-import static org.firstinspires.ftc.teamcode.util.ButtonHelper.dpad_right;
 import static org.firstinspires.ftc.teamcode.util.ButtonHelper.a;
 import static org.firstinspires.ftc.teamcode.util.ButtonHelper.b;
+import static org.firstinspires.ftc.teamcode.util.ButtonHelper.dpad_down;
+import static org.firstinspires.ftc.teamcode.util.ButtonHelper.dpad_left;
+import static org.firstinspires.ftc.teamcode.util.ButtonHelper.dpad_right;
+import static org.firstinspires.ftc.teamcode.util.ButtonHelper.dpad_up;
 import static org.firstinspires.ftc.teamcode.util.ButtonHelper.x;
 import static org.firstinspires.ftc.teamcode.util.ButtonHelper.y;
-import static org.firstinspires.ftc.teamcode.util.ButtonHelper.start;
-
-
-
-
-import org.firstinspires.ftc.robotcontroller.external.samples.ConceptVuforiaNavigation;
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-
-
-import org.firstinspires.ftc.teamcode.util.telemetry.TelemetryWrapper;
 
 /**
  * This OpMode scans a single servo back and forwards until Stop is pressed.
@@ -87,9 +64,9 @@ import org.firstinspires.ftc.teamcode.util.telemetry.TelemetryWrapper;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@TeleOp(name = "TeleOp Mode Test",group = "Test")
+@TeleOp(name = "vuMark ID Class Test", group = "Test")
 //@Disabled
-public class TeleOpTest extends LinearOpMode {
+public class vuMarkIDClassTest extends LinearOpMode {
 
     static final double INCREMENT   = 0.01;     // amount to slew servo each CYCLE_MS cycle
     static final int    CYCLE_MS    =   50;     // period of each cycle
@@ -102,22 +79,13 @@ public class TeleOpTest extends LinearOpMode {
     private ButtonHelper helper;
 
 
-    VuforiaLocalizer vuforia;
-
-
     @Override
     public void runOpMode() {
 
-        helper = new ButtonHelper(gamepad1);
 
-        JewelArm jewelArm = new JewelArm();
-        GlyphArm glyphArm = new GlyphArm();
-        DriveTrain driveTrain = new DriveTrain();
         VuMarkID vuMarkID = new VuMarkID();
 
-        jewelArm.init(hardwareMap,config);
-        glyphArm.init(hardwareMap,config);
-        driveTrain.init(hardwareMap,config);
+
         vuMarkID.init(hardwareMap,config);
 
 
@@ -125,8 +93,9 @@ public class TeleOpTest extends LinearOpMode {
 
 
         // Wait for the start button
-        telemetry.addData(">", "Press Start to Servo test for arm and container." );
+        telemetry.addData(">", "Press Start to test vuMarkID test." );
         telemetry.update();
+
         vuMarkID.activate();
 
         waitForStart();
@@ -146,65 +115,10 @@ public class TeleOpTest extends LinearOpMode {
                     TelemetryWrapper.setLine(0,"VuMark not visible");
                 }
             }
-
-            helper.update();
-
-            // control for container up and down
-            if(helper.pressed(dpad_up)){
-                glyphArm.moveUp();
-                TelemetryWrapper.setLine(1,"Container Move Down at speed: "+ -1*glyphArm.LIFT_POWER);
-            } else if(helper.pressed(dpad_down)){
-                glyphArm.moveDown();
-                TelemetryWrapper.setLine(1,"Container Move Down at speed: "+ glyphArm.LIFT_POWER);
-            } else {
-                glyphArm.stop();
-                TelemetryWrapper.setLine(1,"Container Stopped!");
-            }
-
-
-            //control for container turn back and forward
-            if(helper.pressed(dpad_left)){
-                glyphArm.turnContainer(-1*glyphArm.CONTAINER_TURN_SPEED);
-                TelemetryWrapper.setLine(2,"Container Turn Back at speed "+ -1*glyphArm.CONTAINER_TURN_SPEED);
-            } else if(helper.pressed(dpad_right)){
-                glyphArm.turnContainer(glyphArm.CONTAINER_TURN_SPEED);
-                TelemetryWrapper.setLine(2,"Container Turn Forward at speed "+ glyphArm.CONTAINER_TURN_SPEED);
-            }
-
-            if(helper.pressed(x)) glyphArm.closeContainer();
-            else if(helper.pressed(y)) glyphArm.openContainer();
-
-            //control for arm
-            if(helper.pressed(a)){
-                jewelArm.closeJewelArm();
-                TelemetryWrapper.setLine(3,"Servo Color Arm Closed, at position"+jewelArm.MIN_POS_ARM);
-            }
-            else if(helper.pressed(b)){
-                jewelArm.openJewelArm();
-                TelemetryWrapper.setLine(3,"Servo Color Arm Opened, at position"+jewelArm.MAX_POS_ARM);
-            }
-
-
-            // Choose to drive using either Tank Mode, or POV Mode
-            // Comment out the method that's not used.  The default below is POV.
-
-            // POV Mode uses left stick to go forward, and right stick to turn.
-            // - This uses basic math to combine motions and is easier to drive straight.
-            double drive =  gamepad1.left_stick_y;
-            double turn  =  -gamepad1.right_stick_x;
-            driveTrain.move(drive,turn);
-
-            // Show the elapsed game time and wheel power.
-            TelemetryWrapper.setLine(4,"Motors in drive: " +drive + " turn: "+turn);
-
-
             TelemetryWrapper.setLine(5, "Press Stop to end test." );
-
-
             if(vuMark != RelicRecoveryVuMark.UNKNOWN) sleep(CYCLE_MS);
             idle();
         }
-
         // Signal done;
         telemetry.addData(">", "Done");
         telemetry.update();

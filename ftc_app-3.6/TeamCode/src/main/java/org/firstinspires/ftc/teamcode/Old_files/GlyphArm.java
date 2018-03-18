@@ -1,16 +1,16 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Old_files;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.util.Config;
+import com.qualcomm.robotcore.util.Range;
 
 
-public class GlyphCatcher {
+public class GlyphArm {
     private DcMotor verticalMotor;
     private Servo leftHand;
     private Servo rightHand;
@@ -27,7 +27,7 @@ public class GlyphCatcher {
 
 public void init(HardwareMap Map,Config config) {
     hwMap = Map;
-    verticalMotor = hwMap.get(DcMotor.class, "fl_drive");
+    //verticalMotor = hwMap.get(DcMotor.class, "lift_drive");
     leftHand = hwMap.get(Servo.class, "lift_left");
     rightHand = hwMap.get(Servo.class, "lift_right");
 
@@ -39,8 +39,8 @@ public void init(HardwareMap Map,Config config) {
     CONTAINER_TURN_SPEED = config.getDouble("container_turn_speed",1);
     LIFT_POWER = config.getDouble("lift_power", 0.30);
 
-    verticalMotor.setDirection(DcMotor.Direction.FORWARD);
-    verticalMotor.setPower(0);
+    //verticalMotor.setDirection(DcMotor.Direction.FORWARD);
+    //verticalMotor.setPower(0);
     container_position = MIN_POS;
     leftHand.setPosition(container_position);
     rightHand.setPosition(getRightPosFromLeft(container_position));
@@ -53,23 +53,23 @@ public void getPosition(Telemetry telemetry){
 }
 
 public void moveUpOrDown(double power){
-    verticalMotor.setDirection(DcMotor.Direction.FORWARD);
-    verticalMotor.setPower(power);
+    //verticalMotor.setDirection(DcMotor.Direction.FORWARD);
+    //verticalMotor.setPower(power);
 }
 
 public void moveUp(){
-    verticalMotor.setDirection(DcMotor.Direction.FORWARD);
-    verticalMotor.setPower(-1.0*LIFT_POWER);
+    //verticalMotor.setDirection(DcMotor.Direction.FORWARD);
+    //verticalMotor.setPower(-1.0*LIFT_POWER);
 }
 
 public void moveDown(){
-        verticalMotor.setDirection(DcMotor.Direction.FORWARD);
-        verticalMotor.setPower(LIFT_POWER);
+       //verticalMotor.setDirection(DcMotor.Direction.FORWARD);
+       // verticalMotor.setPower(LIFT_POWER);
     }
 
 public void stop(){
-    verticalMotor.setDirection(DcMotor.Direction.FORWARD);
-    verticalMotor.setPower(0);
+   // verticalMotor.setDirection(DcMotor.Direction.FORWARD);
+   // verticalMotor.setPower(0);
 }
 
 public void openContainer(){

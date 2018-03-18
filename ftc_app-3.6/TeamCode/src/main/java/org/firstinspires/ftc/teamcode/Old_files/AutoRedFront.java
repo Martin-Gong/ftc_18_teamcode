@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Old_files;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -21,7 +21,7 @@ public class AutoRedFront extends LinearOpMode {
     String teamColor = "red";
     String foundColor = null;
     ColorSensor colorSensor;
-    static final Config config = new Config(Config.configFile);
+    private Config config = new Config(Config.configFile);
 
     @Override
     public void runOpMode() {
@@ -93,74 +93,49 @@ public class AutoRedFront extends LinearOpMode {
 
         }
         runtime.reset();
-        /*
+
         //turn on color sensor light
         colorSensor.enableLed(true);
         //drop jewel arm so color sensor can detect
         runtime.reset();
         while (opModeIsActive() && runtime.seconds() < 2) {
-            jewelArm.setJewelArm(0.65);
+            jewelArm.openJewelArm();
             //returns which color the jewel is
             if (colorSensor.red() > colorSensor.blue()) {
                 foundColor = "red";
             } else if (colorSensor.blue() > colorSensor.red()) {
                 foundColor = "blue";
             } else {
-y
-            }
-        }
-        */
-        foundColor = "red";
-        int redTimes = 0, blueTimes = 0;
-        runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < 2) {
-            jewelArm.openJewelArm();
-            if (colorSensor.red() > colorSensor.blue()) {
                 foundColor = "red";
-                redTimes++;
-            } else if (colorSensor.blue() > colorSensor.red()) {
-                foundColor = "blue";
-                blueTimes++;
             }
         }
-        if(blueTimes > redTimes)
-            foundColor = "blue";
-        else
-            foundColor = "red";
-        
-        runtime.reset();
 
         //checks if the color the jewel it detects is same as team color
-        if (teamColor == foundColor)
-        {
+        if (teamColor == foundColor) {
             while (opModeIsActive() && runtime.seconds() < kickColorTime1) {
-                //moves and pushes the other jewel
                 jewelArm.openJewelArm();
-                driveTrain.move(kickColorPower1, 0);
+                //moves and pushes the other jewel
+                driveTrain.move(0,kickColorPower1, 0);
             }
             driveTrain.stop();
             runtime.reset();
             while (opModeIsActive() && runtime.seconds() < kickColorTime2) {
                 jewelArm.closeJewelArm();
-                driveTrain.move(-1*kickColorPower2, 0);
+                driveTrain.move(0,-1*kickColorPower2, 0);
             }
             // if the color of the jewel is not the same as the color of the team
-        }
-        else
-        {
-            while (opModeIsActive() && runtime.seconds() < kickColorTime1)
-            {
+        } else {
+            while (opModeIsActive() && runtime.seconds() < kickColorTime1) {
                 jewelArm.openJewelArm();
-                //moves and pushes off the sacolorSensorme jewel it detects because colors dont match
-                driveTrain.move(-1*kickColorPower1, 0);
+                //moves and pushes off the same jewel it detects because colors dont match
+                driveTrain.move(0,-1*kickColorPower1, 0);
             }
             driveTrain.stop();
             //move to regain back to the same position
             runtime.reset();
-            while (opModeIsActive() && runtime.seconds() < kickColorTime2)
-            {
+            while (opModeIsActive() && runtime.seconds() < kickColorTime2) {
                 jewelArm.closeJewelArm();
-                driveTrain.move(kickColorPower2, 0);
+                driveTrain.move(0,kickColorPower2, 0);
             }
 
         }
@@ -172,18 +147,18 @@ y
         else  if(vuMark == RelicRecoveryVuMark.RIGHT) timeToRun = timeToRunRight;
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < timeToRun)) {
-            driveTrain.move(timeToRunPower, 0);
+            driveTrain.move(0,timeToRunPower, 0);
         }
         //turn to crypto box
         runtime.reset();
         while (opModeIsActive() && runtime.seconds() < turnTime) {
-            driveTrain.move(0.0, turnPower);
+            driveTrain.move(0,0.0, turnPower);
         }
         driveTrain.stop();
         //move close to crypt box
         runtime.reset();
         while (opModeIsActive() && runtime.seconds() < approachTime) {
-            driveTrain.move(approachPower, 0);
+            driveTrain.move(0,approachPower, 0);
         }
         driveTrain.stop();
 
@@ -195,7 +170,7 @@ y
         glyphArm.closeContainer();
         //move in all the way
         while (opModeIsActive() && runtime.seconds() < adjustPosTime) {
-            driveTrain.move(adjustPosPower, 0.0);
+            driveTrain.move(0,adjustPosPower, 0.0);
         }
         driveTrain.stop();
         //To stop the drive train

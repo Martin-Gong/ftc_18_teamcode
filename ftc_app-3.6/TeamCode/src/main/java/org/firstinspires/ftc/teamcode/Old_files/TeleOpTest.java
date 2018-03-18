@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Old_files;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -94,7 +94,7 @@ public class TeleOpTest extends LinearOpMode {
     static final double INCREMENT   = 0.01;     // amount to slew servo each CYCLE_MS cycle
     static final int    CYCLE_MS    =   50;     // period of each cycle
 
-    static final Config config = new Config(Config.configFile);
+    private Config config = new Config(Config.configFile);
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -132,7 +132,10 @@ public class TeleOpTest extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        TelemetryWrapper.init(telemetry,6);
+        TelemetryWrapper.init(telemetry,8);
+        TelemetryWrapper.setLine(6, "arm_min="+jewelArm.MIN_POS_ARM+"arm_max="+jewelArm.MAX_POS_ARM);
+        TelemetryWrapper.setLine(7, "container: min="+glyphArm.MIN_POS+" max="+glyphArm.MAX_POS
+                +" span_left="+glyphArm.CONTAINER_SPAN_LEFT+" span_right="+glyphArm.CONTAINER_SPAN_RIGHT);
 
         // Scan servo till stop pressed.
         while(opModeIsActive()){
@@ -165,10 +168,12 @@ public class TeleOpTest extends LinearOpMode {
             //control for container turn back and forward
             if(helper.pressed(dpad_left)){
                 glyphArm.turnContainer(-1*glyphArm.CONTAINER_TURN_SPEED);
-                TelemetryWrapper.setLine(2,"Container Turn Back at speed "+ -1*glyphArm.CONTAINER_TURN_SPEED);
+                TelemetryWrapper.setLine(2,"Container Turn Back at speed "+ -1*glyphArm.CONTAINER_TURN_SPEED
+                        + "Position: left=" + glyphArm.getLeftPosition() + "right="+ glyphArm.getRightPosition());
             } else if(helper.pressed(dpad_right)){
                 glyphArm.turnContainer(glyphArm.CONTAINER_TURN_SPEED);
-                TelemetryWrapper.setLine(2,"Container Turn Forward at speed "+ glyphArm.CONTAINER_TURN_SPEED);
+                TelemetryWrapper.setLine(2,"Container Turn Forward at speed "+ glyphArm.CONTAINER_TURN_SPEED
+                        + "Position: left=" + glyphArm.getLeftPosition() + "right="+ glyphArm.getRightPosition());
             }
 
             if(helper.pressed(x)) glyphArm.closeContainer();
@@ -190,12 +195,13 @@ public class TeleOpTest extends LinearOpMode {
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
-            double drive =  gamepad1.left_stick_y;
+            double drivey =  gamepad1.left_stick_y;
+            double drivex =  gamepad1.left_stick_x;
             double turn  =  -gamepad1.right_stick_x;
-            driveTrain.move(drive,turn);
+            driveTrain.move(drivex,drivey,turn);
 
             // Show the elapsed game time and wheel power.
-            TelemetryWrapper.setLine(4,"Motors in drive: " +drive + " turn: "+turn);
+            TelemetryWrapper.setLine(4,"Motors in drivex: " + drivex +"drivey: " + drivey+" turn: "+turn);
 
 
             TelemetryWrapper.setLine(5, "Press Stop to end test." );

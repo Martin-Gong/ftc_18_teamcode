@@ -148,6 +148,9 @@ public class FtcRobotControllerActivity extends Activity
   protected Dimmer dimmer;
   protected LinearLayout entireScreenLayout;
 
+//  //Get the camera monitor layout so we can play with it! -8813
+//  public LinearLayout cameraMonitorLayout;
+
   protected FtcRobotControllerService controllerService;
   protected NetworkType networkType;
 

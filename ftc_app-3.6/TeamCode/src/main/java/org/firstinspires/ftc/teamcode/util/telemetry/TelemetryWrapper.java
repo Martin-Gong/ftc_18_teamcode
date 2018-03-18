@@ -31,11 +31,6 @@ public class TelemetryWrapper {
         render();
     }
 
-    public static void setLineNoRender(int l, String message) {
-        if (l < 0 || l >= lines.length) return;
-        lines[l] = message;
-    }
-
     public static void setLines(int l) {
         t.clear();
         lines = new String[l];
